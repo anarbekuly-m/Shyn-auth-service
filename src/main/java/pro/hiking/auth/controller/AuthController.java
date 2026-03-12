@@ -1,5 +1,6 @@
 package pro.hiking.auth.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pro.hiking.auth.dto.LoginRequest;
@@ -16,7 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public UserResponse register(@RequestBody RegisterRequest request) {
+    public UserResponse register(@Valid @RequestBody RegisterRequest request) {
         User user = authService.register(request);
         return new UserResponse(user.getId(), user.getUsername(), user.getEmail());
     }

@@ -1,8 +1,10 @@
 package pro.hiking.auth.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import pro.hiking.auth.dto.LoginRequest;
 import pro.hiking.auth.dto.RegisterRequest;
 import pro.hiking.auth.entity.User;
@@ -19,6 +21,10 @@ public class AuthService {
 
     // Регистрация пользователя
     public User register(RegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
