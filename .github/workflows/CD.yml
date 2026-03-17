@@ -27,6 +27,7 @@ jobs:
         run: |
           sudo docker rm -f auth-service-container || true
           sudo docker rm -f hiking_postgres || true
+          sudo docker rm -f hiking_nginx || true  # <-- добавить NGINX
 
       # --- ENSURE POSTGRES VOLUME EXISTS ---
       - name: Ensure Postgres volume exists
@@ -66,3 +67,13 @@ jobs:
             -e SPRING_JPA_HIBERNATE_DDL_AUTO=update \
             -e SPRING_SERVER_ADDRESS=0.0.0.0 \
             anarbekulym/auth-service:latest
+
+      # --- START NGINX ---
+      - name: Start NGINX container
+        run: |
+          sudo docker run -d \
+            --name hiking_nginx \
+            --network hiking-network \
+            -p 80:80 \
+            -v /home/runner/nginx.conf:/etc/nginx/conf.d/default.conf:ro \
+            nginx:latest
