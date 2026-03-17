@@ -24,8 +24,8 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())  // отключаем Basic Auth
                 .formLogin(form -> form.disable())           // отключаем форму логина
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui/index.html").permitAll()
+                        .anyRequest().authenticated()
                 );
 
         return http.build();
