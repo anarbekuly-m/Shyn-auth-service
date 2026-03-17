@@ -30,11 +30,13 @@ services:
     image: nginx:latest
     container_name: hiking_nginx
     ports:
-      - "80:80"   # внешний порт для браузера
+      - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # ИЗМЕНИ ЭТУ СТРОКУ:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - auth-service
+
 
 volumes:
   postgres_data:
