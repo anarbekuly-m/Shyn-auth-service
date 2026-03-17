@@ -3,8 +3,8 @@ package pro.hiking.auth.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -19,7 +19,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // отключаем CSRF для Swagger
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
@@ -28,10 +28,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**"
-                        ).permitAll()
+                        ).permitAll()  // разрешаем Swagger UI
                         .anyRequest().authenticated()
                 )
-                .httpBasic(httpBasic -> httpBasic.disable()) // <-- вот так точно
+                .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
                 .logout(logout -> logout.disable());
 
