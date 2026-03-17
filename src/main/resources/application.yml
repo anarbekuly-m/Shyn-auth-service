@@ -1,9 +1,12 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/hiking_db
+    url: jdbc:postgresql://hiking_postgres:5432/hiking_db
     username: postgres
     password: 12345678
-
   jpa:
     hibernate:
       ddl-auto: update
