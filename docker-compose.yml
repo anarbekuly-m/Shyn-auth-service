@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     ports:
-      - "5433:5432"
+      - "5433:5432"                 # доступ к Postgres с хоста EC2
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -17,13 +17,15 @@ services:
     build: .
     container_name: hiking_auth_service
     ports:
-      - "8080:8080"
+      - "8080:8080"                 # доступ к Spring Boot с хоста EC2
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://hiking_postgres:5432/hiking_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_SERVER_ADDRESS: 0.0.0.0
+      SPRING_SERVER_ADDRESS: 0.0.0.0  # слушаем на всех интерфейсах
+      SPRING_SECURITY_USER_NAME: ""    # отключаем default user
+      SPRING_SECURITY_USER_PASSWORD: ""
     depends_on:
       - postgres
 
