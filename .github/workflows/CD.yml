@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- 2. Очистка старых контейнеров и образов ---
+      # --- 2. Очистка старых контейнеров и образdов ---
       - name: Cleanup old Docker containers and images
         run: |
           sudo docker system prune -a -f
