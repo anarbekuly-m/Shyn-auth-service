@@ -11,29 +11,31 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      # --- 1. Checkout репозитория (твой nginx.conf будет доступен) ---
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # --- CLEANUP STEP ---
+      # --- 2. Очистка старых контейнеров и образов ---
       - name: Cleanup old Docker containers and images
         run: |
           sudo docker system prune -a -f
-          # Volume сохраняется для БД
 
-      # --- CREATE NETWORK ---
+      # --- 3. Создание Docker сети ---
       - name: Create Docker network
         run: sudo docker network create hiking-network || true
 
-      # --- STOP OLD CONTAINERS ---
+      # --- 4. Остановка старых контейнеров ---
       - name: Stop old containers
         run: |
           sudo docker rm -f auth-service-container || true
           sudo docker rm -f hiking_postgres || true
-          sudo docker rm -f hiking_nginx || true  # <-- добавить NGINX
+          sudo docker rm -f hiking_nginx || true
 
-      # --- ENSURE POSTGRES VOLUME EXISTS ---
+      # --- 5. Проверка и создание volume для Postgres ---
       - name: Ensure Postgres volume exists
         run: sudo docker volume create hiking_postgres_data || true
 
-      # --- START POSTGRES ---
+      # --- 6. Запуск Postgres ---
       - name: Start Postgres container
         run: |
           sudo docker run -d \
@@ -46,7 +48,7 @@ jobs:
             -p 5433:5432 \
             postgres:15
 
-      # --- WAIT FOR POSTGRES HEALTH ---
+      # --- 7. Ждём пока Postgres станет доступен ---
       - name: Wait for Postgres to be ready
         run: |
           until sudo docker exec hiking_postgres pg_isready -U postgres; do
@@ -54,7 +56,7 @@ jobs:
             sleep 2
           done
 
-      # --- START AUTH SERVICE ---
+      # --- 8. Запуск Auth Service ---
       - name: Start Auth Service container
         run: |
           sudo docker run -d \
@@ -68,7 +70,7 @@ jobs:
             -e SPRING_SERVER_ADDRESS=0.0.0.0 \
             anarbekulym/auth-service:latest
 
-      # --- START NGINX ---
+      # --- 9. Запуск NGINX (используем файл из репозитория) ---
       - name: Start NGINX container
         run: |
           sudo docker run -d \
