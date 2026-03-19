@@ -10,7 +10,6 @@ import pro.hiking.auth.entity.User;
 import pro.hiking.auth.service.AuthService;
 
 @RestController
-@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
