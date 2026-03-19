@@ -17,7 +17,7 @@ services:
     build: .
     container_name: hiking_auth_service
     ports:
-      - "8080:8080"  # порт внутри контейнера
+      - "8080:8080"  # порт внутри контейнераf
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hiking_db
       SPRING_DATASOURCE_USERNAME: postgres
