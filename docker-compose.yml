@@ -13,7 +13,7 @@ services:
     image: anarbekulym/auth-service:latest
     container_name: shyn_auth_service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://shyn_postgres:5432/shyn_db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shyn_postgres:5432/shyn_auth_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234
     depends_on:
