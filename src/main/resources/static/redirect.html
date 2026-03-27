@@ -2,34 +2,30 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Redirecting to Shyn...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в Shyn</title>
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #121212; color: white; }
+        .btn { padding: 15px 30px; background: #4CAF50; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; }
+    </style>
 </head>
 <body>
+<div style="text-align: center;">
+    <h2>Почти готово!</h2>
+    <p>Нажмите кнопку ниже, чтобы вернуться в приложение</p>
+    <br>
+    <a id="deepLinkBtn" href="#" class="btn">ВЕРНУТЬСЯ В SHYN</a>
+</div>
+
 <script>
-    // Достаем токен из параметров текущего URL
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
-
     if (token) {
-        // Формируем Deep Link
-        const deepLink = "shynapp://login-callback?token=" + token;
+        const link = "shynapp://login-callback?token=" + token;
+        document.getElementById('deepLinkBtn').href = link;
 
-        // Пытаемся открыть приложение
-        window.location.href = deepLink;
-
-        // Если приложение не открылось за 2 секунды (например, не установлено),
-        // даем пользователю кнопку для ручного перехода
-        setTimeout(() => {
-            document.body.innerHTML = `
-                    <div style="text-align:center; margin-top:50px; font-family: sans-serif;">
-                        <h2>Почти готово!</h2>
-                        <p>Если приложение не открылось автоматически, нажмите кнопку ниже:</p>
-                        <a href="${deepLink}" style="padding:10px 20px; background:#4CAF50; color:white; text-decoration:none; border-radius:5px;">Вернуться в Shyn</a>
-                    </div>
-                `;
-        }, 2000);
-    } else {
-        document.body.innerHTML = "Ошибка: Токен не найден.";
+        // Пытаемся автоматически, но если Safari заблокирует — кнопка спасет
+        window.location.href = link;
     }
 </script>
 </body>
